@@ -1,86 +1,124 @@
 import NoteContext from "./noteContext";
 import { useState } from "react";
 
-const NoteState = (props)=>{
+const NoteState = (props) => {
+    const host = "http://localhost:5000";
+    const notesInitial = [ ];
 
-    const notesInitial = [
-        {
-            "_id": "62fc867fe686d5a8c62f4e6f",
-            "user": "62fc864de686d5a8c62f4e6d",
-            "title": "mango",
-            "description": "Tomato lana hai",
-            "tag": "Kuch bhi krle bhai",
-            "date": "2022-08-17T06:11:11.800Z",
-            "__v": 0
-        },
-        {
-            "_id": "62fc868ce686d5a8c62f4e71",
-            "user": "62fc864de686d5a8c62f4e6d",
-            "title": "vegetables",
-            "description": "Banana lana hai",
-            "tag": "Kuch bhi krle bhai",
-            "date": "2022-08-17T06:11:24.968Z",
-            "__v": 0
-        },
-        {
-            "_id": "631f35ca779f1dbca862aeb7",
-            "user": "62fc864de686d5a8c62f4e6d",
-            "title": "apple",
-            "description": "notes 3",
-            "tag": "notes 3 hai ashish2 k",
-            "date": "2022-09-12T13:36:10.360Z",
-            "__v": 0
-        },
-        {
-            "_id": "631f35ff779f1dbca862aeb9",
-            "user": "62fc864de686d5a8c62f4e6d",
-            "title": "sweet",
-            "description": "notes 4",
-            "tag": "notes 3 hai ashish2 k",
-            "date": "2022-09-12T13:37:03.756Z",
-            "__v": 0
-        }
-    ]
-    
     const [notes, setNotes] = useState(notesInitial)
 
     //Add a note
-    const addNote = ({title , description , tag})=>{
+    const getNotes = async () => {
+        // Calling API to get all notes
+        const url = `${host}/api/notes/fetchallnotes`
+
+        const response = await fetch(url, {
+            method: 'GET',
+
+            headers: {
+                'Content-Type': 'application/json' ,
+                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+            },
+
+            
+        });
+        const getAllNotes = await response.json();
+        // console.log(json);
+        setNotes(getAllNotes);
+
+
+    }
+
+    //Add a note
+    const addNote = async ({ title, description, tag }) => {
         //To Do API call
-        console.log("adding a new note");
-        const note = {
-            "_id": "631f35ff779f1dbsa862aeb9",
-            "user": "62fc864de686d5a8c62f4e6d",
-            "title": `${title}`,
-            "description": `${description}`,
-            "tag": " ",
-            "date": "2022-09-12T13:37:03.756Z",
-            "__v": 0
-        }
+        const url = `${host}/api/notes/addnote`
+
+        const response = await fetch(url, {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json' ,
+                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+            },
+            body : JSON.stringify({title , description , tag}) 
+            
+        });
+        const newNote = await response.json();
+        // console.log(newNote);
+
+
+        // console.log("adding a new note");
         
-        // console.log(title , description , tag);
-        // console.log(notii);
 
         //concat returns an array where as push updates an array
         // setNotes(notes.push(note))
-        setNotes(notes.concat(note));
+        setNotes(notes.concat(newNote));
     }
 
     //Delete a Note
-    const deleteNote = ()=>{
-        
+    const deleteNote =async (_id) => {
+        //Calling API
+        const url = `${host}/api/notes/deletenote/${_id.note}`
+
+        const response = await fetch(url, {
+            method: 'DELETE',
+
+            headers: {
+                'Content-Type': 'application/json' ,
+                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+            },
+            // body : JSON.stringify({title , description , tag}) 
+            
+        });
+        // const result = await response;
+        // console.log(result);
+
+        //changing into frontend
+        // console.log("deleting note");
+        // console.log(_id);
+        setNotes(notes.filter((note) => { return note._id !== _id.note }))
+
     }
 
     //Edit a Note
-    const editNote = ()=>{
-        
+    const editNote = async (id , title , description , tag) => {
+        //API Call
+        const url = `${host}/api/notes/updatenote/${id}`
+
+        const response = await fetch(url, {
+            method: 'PUT',
+
+            headers: {
+                'Content-Type': 'application/json' ,
+                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+            },
+            body : JSON.stringify({title , description , tag}) 
+            
+        });
+        const updatedNote = await response.json();
+        // console.log(updatedNote);
+
+        //Logic to change in note for frontend
+        let newNotes = JSON.parse(JSON.stringify(notes));
+        for (let index = 0; index < newNotes.length; index++) {
+            const element = newNotes[index];
+            if(element._id === id){
+                newNotes[index].title = title ;
+                newNotes[index].description = description ;
+                newNotes[index].tag = tag ;
+                break ;
+            }
+            
+        }
+        setNotes(newNotes);
     }
 
     return (
-        <NoteContext.Provider value={{notes , addNote ,deleteNote , editNote}}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
             {props.children}
         </NoteContext.Provider>
     )
 }
 
-export default NoteState ;
+export default NoteState;
