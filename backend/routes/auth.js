@@ -15,10 +15,12 @@ router.post('/createuser', [
 
 ], async (req, res) => {
 
+    let success = false ;
+
     //checking whether all input are according to requirement or not
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({success , errors: errors.array() });
     }
 
     try {
@@ -26,7 +28,7 @@ router.post('/createuser', [
         //checking whether user already exist 
         let user = await User.findOne({ email: req.body.email });
         if (user) {
-            return res.status(400).send("User with this email is already registered");
+            return res.status(400).send({ success , message : "User with this email is already registered"});
         }
 
         // Hashing password
@@ -47,12 +49,13 @@ router.post('/createuser', [
         }
         const authToken = jwt.sign( data , JWT_SECRET);
         
-
-        res.json(authToken);
+        success = true  ;
+        res.json({ success , token : authToken} );
 
     } catch (error) {
         console.log(error);
-        res.status(500).send("Some Error has been occured");
+        success = false ;
+        res.status(500).send({success , message : "Some Error has been occured"});
     }
 
 
@@ -72,8 +75,9 @@ router.post('/login', [
 
     //checking whether all input are according to requirement or not
     const errors = validationResult(req);
+    let success = false ;
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({success , errors: errors.array() });
     }
 
     try {
@@ -81,12 +85,12 @@ router.post('/login', [
         //checking whether user already exist 
         let user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(400).send("Please Login with correct credentials");
+            return res.status(400).send({success , message : "Please Login with correct credentials"});
         }
 
         const passwordCompare = await bcrypt.compare(req.body.password , user.password);
         if(!passwordCompare){
-            return res.status(400).send("Please Login with correct credentials");
+            return res.status(400).send({success , message :  "Please Login with correct credentials"});
         }
 
         
@@ -96,8 +100,9 @@ router.post('/login', [
                 id : user.id
             }
         }
+        success = true ;
         const authToken = jwt.sign( data , JWT_SECRET);
-        res.json(authToken);
+        res.json({ success , 'token' : authToken});
 
 
 

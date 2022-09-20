@@ -5,7 +5,8 @@ const NoteState = (props) => {
     const host = "http://localhost:5000";
     const notesInitial = [ ];
 
-    const [notes, setNotes] = useState(notesInitial)
+    const [notes, setNotes] = useState(notesInitial);
+    
 
     //Add a note
     const getNotes = async () => {
@@ -17,7 +18,8 @@ const NoteState = (props) => {
 
             headers: {
                 'Content-Type': 'application/json' ,
-                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+                "auth-token" : `${localStorage.getItem('token')}` ,
+                // "auth-token" : `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8`
             },
 
             
