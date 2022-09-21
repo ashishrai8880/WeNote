@@ -17,7 +17,7 @@ export const NoteItem = (props) => {
                         <p className="card-text">{note.tag}  </p>
                         
                         {/* <i className="fa-solid fa-trash mx-2"></i> */}
-                        <DeleteNote note={note._id}/>
+                        <DeleteNote note={note._id}  showAlert={props.showAlert}/>
                         <i className="fa-solid fa-pen-to-square mx-2" onClick={()=>{updateNote(note)}}></i>
                     </div>
             </div>

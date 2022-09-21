@@ -12,6 +12,7 @@ const NoteState = (props) => {
     const getNotes = async () => {
         // Calling API to get all notes
         const url = `${host}/api/notes/fetchallnotes`
+        // console.log(localStorage.getItem('token'));
 
         const response = await fetch(url, {
             method: 'GET',
@@ -19,7 +20,7 @@ const NoteState = (props) => {
             headers: {
                 'Content-Type': 'application/json' ,
                 "auth-token" : `${localStorage.getItem('token')}` ,
-                // "auth-token" : `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8`
+                
             },
 
             
@@ -41,7 +42,7 @@ const NoteState = (props) => {
 
             headers: {
                 'Content-Type': 'application/json' ,
-                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+                "auth-token" : `${localStorage.getItem('token')}`
             },
             body : JSON.stringify({title , description , tag}) 
             
@@ -68,9 +69,9 @@ const NoteState = (props) => {
 
             headers: {
                 'Content-Type': 'application/json' ,
-                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+                "auth-token" : `${localStorage.getItem('token')}`
             },
-            // body : JSON.stringify({title , description , tag}) 
+           
             
         });
         // const result = await response;
@@ -93,12 +94,12 @@ const NoteState = (props) => {
 
             headers: {
                 'Content-Type': 'application/json' ,
-                "auth-token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmYzg2NGRlNjg2ZDVhOGM2MmY0ZTZkIn0sImlhdCI6MTY2MDcxNjYyMX0.CUMoCPa5czBUVmSmFz8_Bll2ldSuZJXdi5Csm5hayu8"
+                "auth-token" : `${localStorage.getItem('token')}`
             },
             body : JSON.stringify({title , description , tag}) 
             
         });
-        const updatedNote = await response.json();
+        // const updatedNote = await response.json();
         // console.log(updatedNote);
 
         //Logic to change in note for frontend

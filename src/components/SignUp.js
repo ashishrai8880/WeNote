@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const SignUp = (props) => {
 
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" });
   const navigate = useNavigate();
@@ -27,13 +27,16 @@ const SignUp = () => {
       if (json.success) {
         localStorage.setItem('token' , json.token);
         navigate("/");
+        props.showAlert("Congratulations !! You have successfully created your account","success")
       } else {
-        alert(json.message);
+        // alert(json.message);
+        props.showAlert("Failed !! Internal server error has occured","danger")
       }
 
 
     } else {
-      alert("Confirm Password and Password are different");
+      
+      props.showAlert("Failed !! Confirm Password and Password are different","danger")
       // setCredentials({ password: "", cpassword: "" });
     }
 
@@ -46,6 +49,7 @@ const SignUp = () => {
 
   return (
     <div className="container">
+      <h1 className='my-2'>Create Account to continue to iNoteBook</h1>
       <form onSubmit={handleSubmit}>
 
         <div className="mb-3">

@@ -10,6 +10,7 @@ export const DeleteNote = (props) => {
     const handleClick = () =>{
 
         deleteNote(_id);
+        props.showAlert("Your Note has been Deleted Successfully","danger")
 
     }
 

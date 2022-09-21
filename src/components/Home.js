@@ -1,15 +1,14 @@
-import React  from 'react'
+import React from 'react'
 
 import { Notes } from './Notes'
 
-export const Home = () => {
+export const Home = (props) => {
 
 
   return (
     <div>
-      
-      
-      <Notes/>
+      {/* { localStorage.getItem('token')===null ? navigate('/login') : <Notes showAlert={props.showAlert}/>} */}
+      <Notes showAlert={props.showAlert} />
     </div>
   )
 }
